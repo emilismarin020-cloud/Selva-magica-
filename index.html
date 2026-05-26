@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦁 La Selva Mágica</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #2d8a4e;
+    --verde-claro: #4db870;
+    --verde-oscuro: #1a5c34;
+    --amarillo: #f5c518;
+    --naranja: #f07d22;
+    --cafe: #8b5e3c;
+    --crema: #fdf6e3;
+    --cielo: #a8d8ea;
+    --rosa: #f9a8d4;
+    --azul: #3b82f6;
+    --morado: #7c3aed;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #e8f5e9;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === FONDO SELVA === */
+  .jungle-bg {
+    background: linear-gradient(180deg, #87ceeb 0%, #b2dfdb 30%, #c8e6c9 60%, #a5d6a7 100%);
+    position: fixed; inset: 0; z-index: -2;
+  }
+  .leaf {
+    position: fixed; z-index: -1; opacity: 0.5; pointer-events: none;
+    font-size: 3rem; animation: sway 4s ease-in-out infinite;
+  }
+  @keyframes sway { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
+
+  /* === HEADER === */
+  header {
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+    position: relative;
+  }
+  .titulo {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    color: var(--verde-oscuro);
+    text-shadow: 3px 3px 0 #fff, 6px 6px 0 var(--verde-claro);
+    animation: bounce-in 0.8s cubic-bezier(.36,.07,.19,.97) both;
+    letter-spacing: -1px;
+  }
+  .subtitulo {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: var(--cafe);
+    margin-top: 0.3rem;
+  }
+  @keyframes bounce-in {
+    0%{transform:scale(0.3);opacity:0}
+    60%{transform:scale(1.1)}
+    80%{transform:scale(0.9)}
+    100%{transform:scale(1);opacity:1}
+  }
+
+  /* === BARRA SUPERIOR BOTONES === */
+  .top-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 1.2rem;
+    max-width: 960px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  /* === REGISTRO PARTICIPANTE === */
+  .registro-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 1rem;
+    flex-wrap: wrap;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50px;
+    margin: 0 auto 0.5rem;
+    max-width: 700px;
+    backdrop-filter: blur(4px);
+    border: 2px solid rgba(45,138,78,0.3);
+  }
+  .registro-bar input {
+    border: 2px solid var(--verde);
+    border-radius: 30px;
+    padding: 0.45rem 1rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    outline: none;
+    background: #fff;
+    min-width: 180px;
+    color: var(--verde-oscuro);
+  }
+  .registro-bar input:focus { border-color: var(--naranja); box-shadow: 0 0 0 3px rgba(240,125,34,0.2); }
+  .badge-jugador {
+    background: var(--verde);
+    color: #fff;
+    border-radius: 50px;
+    padding: 0.3rem 1rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .badge-puntos {
+    background: var(--amarillo);
+    color: var(--verde-oscuro);
+    font-weight: 800;
+    border-radius: 20px;
+    padding: 0.1rem 0.6rem;
+    font-size: 0.95rem;
+    font-family: 'Baloo 2', cursive;
+  }
+
+  /* === NAV JUEGOS === */
+  .nav-juegos {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.8rem; padding: 1rem;
+    max-width: 960px; margin: 0 auto;
+  }
+  .btn-nav {
+    background: #fff;
+    border: 3px solid var(--verde);
+    border-radius: 50px;
+    padding: 0.6rem 1.4rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--verde-oscuro);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 0 var(--verde);
+  }
+  .btn-nav:hover, .btn-nav.activo {
+    background: var(--verde);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 0 var(--verde-oscuro);
+  }
+  .btn-nav:active { transform: translateY(1px); box-shadow: 0 2px 0 var(--verde-oscuro); }
+
+  /* Botón profe */
+  .btn-profe {
+    background: var(--morado);
+    border: 3px solid #5b21b6;
+    color: #fff;
+    border-radius: 50px;
+    padding: 0.55rem 1.3rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 0 #5b21b6;
+  }
+  .btn-profe:hover { background: #6d28d9; transform: translateY(-2px); box-shadow: 0 6px 0 #4c1d95; }
+  .btn-participantes {
+    background: var(--azul);
+    border: 3px solid #1d4ed8;
+    color: #fff;
+    border-radius: 50px;
+    padding: 0.55rem 1.3rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 0 #1d4ed8;
+  }
+  .btn-participantes:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 6px 0 #1e40af; }
+
+  /* === SECCIONES === */
+  .seccion { display: none; padding: 1rem; max-width: 960px; margin: 0 auto; }
+  .seccion.activa { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* === JUEGO 1: ANIMALES === */
+  .animales-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 1rem; margin-top: 1rem;
+  }
+  .animal-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.2rem 0.8rem;
+    text-align: center;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s cubic-bezier(.36,.07,.19,.97);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: relative; overflow: hidden;
+  }
+  .animal-card:hover {
+    transform: scale(1.08) rotate(-2deg);
+    border-color: var(--verde);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+  .animal-card.flip { animation: flip 0.6s ease; }
+  @keyframes flip { 0%{transform:rotateY(0)} 50%{transform:rotateY(90deg) scale(1.1)} 100%{transform:rotateY(0)} }
+  .emoji-animal { font-size: 3.5rem; display: block; margin-bottom: 0.5rem; }
+  .nombre-animal {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--verde-oscuro);
+  }
+  .dato-animal {
+    font-size: 0.78rem; color: #666;
+    margin-top: 0.3rem; line-height: 1.3;
+    display: none;
+  }
+  .animal-card.mostrar-dato .dato-animal { display: block; }
+  .animal-card.mostrar-dato { border-color: var(--amarillo); background: #fffef0; }
+
+  /* === JUEGO 2: SONIDOS === */
+  .sonidos-container { margin-top: 1rem; }
+  .pregunta-sonido {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+  }
+  .pregunta-sonido h2 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.5rem; color: var(--verde-oscuro);
+    margin-bottom: 0.5rem;
+  }
+  .emoji-pregunta { font-size: 5rem; display: block; margin: 0.5rem 0; }
+  .opciones-sonido {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem; margin-top: 1rem;
+  }
+  .btn-opcion {
+    background: var(--crema);
+    border: 3px solid var(--cafe);
+    border-radius: 15px;
+    padding: 0.9rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.15rem; font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-opcion:hover { background: #fff3cd; transform: scale(1.03); }
+  .btn-opcion.correcto { background: #d4edda; border-color: #28a745; color: #155724; }
+  .btn-opcion.incorrecto { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+  .puntaje-box {
+    display: flex; justify-content: center; gap: 2rem;
+    background: var(--verde-oscuro);
+    border-radius: 15px; padding: 0.8rem; margin: 1rem 0;
+    color: #fff; font-family: 'Baloo 2', cursive; font-size: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .btn-siguiente {
+    background: var(--naranja); color: #fff;
+    border: none; border-radius: 50px;
+    padding: 0.8rem 2rem;
+    font-family: 'Baloo 2', cursive; font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; margin-top: 0.8rem;
+    box-shadow: 0 4px 0 #c0621a;
+    transition: all 0.2s; display: none;
+  }
+  .btn-siguiente:hover { transform: translateY(-3px); box-shadow: 0 7px 0 #c0621a; }
+  .btn-escuchar {
+    background: var(--morado); color: #fff;
+    border: none; border-radius: 50px;
+    padding: 0.7rem 1.6rem;
+    font-family: 'Baloo 2', cursive; font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; margin: 0.5rem auto 0; display: block;
+    box-shadow: 0 4px 0 #5b21b6;
+    transition: all 0.2s;
+    animation: pulse-btn 2s ease-in-out infinite;
+  }
+  .btn-escuchar:hover { transform: translateY(-3px); box-shadow: 0 7px 0 #5b21b6; }
+  .btn-escuchar:active { transform: translateY(1px); }
+  @keyframes pulse-btn {
+    0%,100%{box-shadow:0 4px 0 #5b21b6,0 0 0 0 rgba(124,58,237,0.4)}
+    50%{box-shadow:0 4px 0 #5b21b6,0 0 0 10px rgba(124,58,237,0)}
+  }
+  .animal-card .btn-sonido-card {
+    background: var(--morado); color: #fff;
+    border: none; border-radius: 30px;
+    padding: 0.3rem 0.9rem;
+    font-family: 'Baloo 2', cursive; font-size: 0.85rem; font-weight: 700;
+    cursor: pointer; margin-top: 0.5rem;
+    box-shadow: 0 3px 0 #5b21b6;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .animal-card .btn-sonido-card:hover { background: #6d28d9; transform: scale(1.05); }
+
+  /* === JUEGO 3: MEMORIA === */
+  .memoria-info {
+    display: flex; justify-content: center; gap: 2rem;
+    font-family: 'Baloo 2', cursive; font-size: 1.2rem;
+    color: var(--verde-oscuro); margin: 0.5rem 0 1rem;
+    flex-wrap: wrap;
+  }
+  .memoria-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem; max-width: 500px; margin: 0 auto;
+  }
+  .carta {
+    aspect-ratio: 1;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 2rem;
+    display: flex; align-items: center; justify-content: center;
+    border: 3px solid var(--verde);
+    background: var(--verde);
+    transition: all 0.3s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    user-select: none;
+    position: relative;
+  }
+  .carta .frente { display: none; }
+  .carta.volteada { background: #fff; }
+  .carta.volteada .frente { display: block; }
+  .carta.volteada .dorso { display: none; }
+  .carta.pareja { background: #d4edda; border-color: #28a745; cursor: default; }
+  .carta .dorso { font-size: 1.5rem; }
+  .btn-reiniciar {
+    background: var(--amarillo); color: var(--verde-oscuro);
+    border: none; border-radius: 50px;
+    padding: 0.7rem 1.8rem;
+    font-family: 'Baloo 2', cursive; font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; margin: 1rem auto; display: block;
+    box-shadow: 0 4px 0 #c9a100;
+    transition: all 0.2s;
+  }
+  .btn-reiniciar:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #c9a100; }
+
+  /* === JUEGO 4: COLOREAR === */
+  .colorear-section { text-align: center; }
+  .paleta {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.5rem; margin: 1rem auto;
+  }
+  .color-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 3px solid #fff;
+    cursor: pointer; transition: transform 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .color-btn:hover { transform: scale(1.3); }
+  .color-btn.seleccionado { border-color: #333; transform: scale(1.25); }
+  #canvas-colorear {
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    cursor: crosshair;
+    background: #fff;
+    max-width: 100%;
+    touch-action: none;
+  }
+  .btn-limpiar {
+    background: #e74c3c; color: #fff;
+    border: none; border-radius: 50px;
+    padding: 0.6rem 1.5rem;
+    font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 700;
+    cursor: pointer; margin: 0.5rem;
+    box-shadow: 0 3px 0 #a93226;
+  }
+
+  /* === JUEGO 5: ARRASTRAR (NUEVO) === */
+  .drag-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  .drag-instruccion {
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    color: var(--cafe);
+    background: #fffef0;
+    border-radius: 15px;
+    padding: 0.6rem 1.2rem;
+    border: 2px dashed var(--amarillo);
+  }
+  .drag-area {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 800px;
+  }
+  .drag-columna {
+    flex: 1;
+    min-width: 200px;
+    max-width: 340px;
+  }
+  .drag-columna h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    color: #fff;
+    text-align: center;
+    border-radius: 12px 12px 0 0;
+    padding: 0.6rem 1rem;
+    font-weight: 800;
+  }
+  .drag-columna.selva h3 { background: var(--verde); }
+  .drag-columna.sabana h3 { background: #c97c2a; }
+  .drag-zona {
+    border: 3px dashed #ccc;
+    border-radius: 0 0 14px 14px;
+    min-height: 130px;
+    padding: 0.6rem;
+    background: rgba(255,255,255,0.75);
+    transition: background 0.2s, border-color 0.2s;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-content: flex-start;
+  }
+  .drag-zona.hovered {
+    background: rgba(255,255,255,0.95);
+    border-color: var(--naranja);
+    border-style: solid;
+  }
+  .drag-zona.selva-zona.hovered { border-color: var(--verde); }
+  .drag-zona.sabana-zona.hovered { border-color: #c97c2a; }
+
+  .drag-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    background: rgba(255,255,255,0.6);
+    border-radius: 15px;
+    padding: 0.8rem;
+    max-width: 800px;
+    width: 100%;
+    min-height: 70px;
+    border: 2px dashed rgba(0,0,0,0.15);
+  }
+  .drag-chip {
+    background: #fff;
+    border: 2.5px solid var(--verde);
+    border-radius: 30px;
+    padding: 0.4rem 0.9rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.18s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .drag-chip:hover { transform: scale(1.08); box-shadow: 0 5px 14px rgba(0,0,0,0.13); }
+  .drag-chip.dragging { opacity: 0.45; transform: scale(0.95); }
+  .drag-chip.correcto { background: #d4edda; border-color: #28a745; }
+  .drag-chip.incorrecto { background: #f8d7da; border-color: #dc3545; }
+  .drag-resultado {
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 15px;
+    margin-top: 0.5rem;
+    background: #fff3cd;
+    color: #856404;
+    display: none;
+  }
+  .drag-resultado.visible { display: block; animation: bounce-in 0.5s both; }
+  .drag-puntaje {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.15rem;
+    background: var(--verde-oscuro);
+    color: #fff;
+    border-radius: 12px;
+    padding: 0.5rem 1.2rem;
+    text-align: center;
+  }
+  .btn-verificar-drag {
+    background: var(--verde);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.8rem 2.2rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--verde-oscuro);
+    transition: all 0.2s;
+    margin-top: 0.5rem;
+  }
+  .btn-verificar-drag:hover { transform: translateY(-3px); box-shadow: 0 7px 0 var(--verde-oscuro); }
+
+  /* === TÍTULO SECCIÓN === */
+  .seccion-titulo {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 800;
+    color: var(--verde-oscuro);
+    text-align: center;
+    margin-bottom: 0.3rem;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+  }
+  .seccion-desc {
+    text-align: center; color: #555; font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* === MENSAJE FINAL === */
+  .mensaje {
+    text-align: center; padding: 1rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+    border-radius: 15px; margin-top: 0.5rem;
+    background: #fff3cd; color: #856404;
+    display: none;
+  }
+  .mensaje.visible { display: block; animation: bounce-in 0.5s both; }
+
+  /* === MODAL PROFE / PARTICIPANTES === */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    backdrop-filter: blur(3px);
+  }
+  .modal-overlay.abierto { display: flex; animation: fadeIn 0.25s ease; }
+  .modal {
+    background: #fff;
+    border-radius: 24px;
+    padding: 1.8rem 2rem;
+    max-width: 640px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    position: relative;
+  }
+  .modal-titulo {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--verde-oscuro);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: #f87171;
+    border: none;
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    line-height: 1;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: #dc2626; }
+
+  /* === TABLA PARTICIPANTES === */
+  .tabla-participantes {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Nunito', sans-serif;
+    margin-top: 0.5rem;
+  }
+  .tabla-participantes th {
+    background: var(--verde-oscuro);
+    color: #fff;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    text-align: left;
+  }
+  .tabla-participantes th:first-child { border-radius: 10px 0 0 0; }
+  .tabla-participantes th:last-child { border-radius: 0 10px 0 0; }
+  .tabla-participantes td {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.95rem;
+  }
+  .tabla-participantes tr:nth-child(even) td { background: #f0fdf4; }
+  .tabla-participantes tr:hover td { background: #dcfce7; }
+  .rank-badge {
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+  .rank-1 { color: #f59e0b; }
+  .rank-2 { color: #94a3b8; }
+  .rank-3 { color: #b45309; }
+  .puntos-chip {
+    background: var(--amarillo);
+    color: var(--verde-oscuro);
+    border-radius: 20px;
+    padding: 0.15rem 0.7rem;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+  .progress-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 80px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--verde-claro), var(--verde-oscuro));
+    border-radius: 10px;
+    transition: width 0.4s;
+  }
+  .sin-participantes {
+    text-align: center;
+    color: #9ca3af;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    padding: 2rem;
+  }
+
+  /* === PANEL PROFE STATS === */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+  .stat-card {
+    background: #f0fdf4;
+    border: 2px solid var(--verde-claro);
+    border-radius: 14px;
+    padding: 0.7rem;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--verde-oscuro);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: #6b7280;
+    font-family: 'Nunito', sans-serif;
+    margin-top: 0.2rem;
+  }
+  .btn-limpiar-datos {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 2px solid #fca5a5;
+    border-radius: 30px;
+    padding: 0.45rem 1.1rem;
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
+  }
+  .btn-limpiar-datos:hover { background: #fca5a5; }
+  .juego-tag {
+    display: inline-block;
+    background: var(--verde);
+    color: #fff;
+    border-radius: 10px;
+    padding: 0.1rem 0.55rem;
+    font-size: 0.78rem;
+    font-family: 'Baloo 2', cursive;
+    margin: 0.1rem;
+  }
+  .juego-tag.sonidos { background: #d97706; }
+  .juego-tag.memoria { background: #7c3aed; }
+  .juego-tag.arrastrar { background: #0369a1; }
+
+  /* === RESPONSIVO === */
+  @media(max-width:600px) {
+    .memoria-grid { grid-template-columns: repeat(4,1fr); gap:0.5rem; }
+    .carta { font-size: 1.5rem; }
+    .opciones-sonido { grid-template-columns: 1fr; }
+    .drag-columna { min-width: 140px; }
+    .drag-chip { font-size: 0.9rem; padding: 0.3rem 0.7rem; }
+    .top-bar { justify-content: center; }
+  }
+
+  /* Confetti animation */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    animation: confetti-fall linear forwards;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="jungle-bg"></div>
+<span class="leaf" style="top:5%;left:2%;animation-delay:0s">🌿</span>
+<span class="leaf" style="top:15%;right:3%;animation-delay:1s">🍃</span>
+<span class="leaf" style="top:40%;left:1%;animation-delay:2s">🌴</span>
+<span class="leaf" style="top:60%;right:2%;animation-delay:0.5s">🌿</span>
+<span class="leaf" style="top:80%;left:3%;animation-delay:1.5s">🍃</span>
+
+<header>
+  <div class="titulo">🦁 La Selva Mágica 🦁</div>
+  <div class="subtitulo">¡Aprende y juega con los animales!</div>
+</header>
+
+<!-- Registro / badge participante -->
+<div id="registroBar" class="registro-bar">
+  <span style="font-family:'Baloo 2',cursive;font-weight:700;color:var(--verde-oscuro);">👤 Tu nombre:</span>
+  <input type="text" id="inputNombre" placeholder="Escribe tu nombre..." maxlength="24" />
+  <button class="btn-nav" style="padding:0.45rem 1.1rem;font-size:0.95rem;" onclick="registrarParticipante()">✅ Entrar</button>
+</div>
+<div id="badgeJugador" class="registro-bar" style="display:none;">
+  <div class="badge-jugador">
+    🌿 <span id="nombreActual"></span>
+    <span class="badge-puntos" id="puntosActual">0 ⭐</span>
+  </div>
+  <button style="background:none;border:none;cursor:pointer;font-size:1rem;color:#6b7280;" onclick="cerrarSesion()" title="Cambiar jugador">🔄 Cambiar</button>
+</div>
+
+<!-- Botones profe / participantes -->
+<div class="top-bar">
+  <button class="btn-participantes" onclick="abrirParticipantes()">👥 Participantes</button>
+  <button class="btn-profe" onclick="abrirProfe()">📋 Panel Profe</button>
+</div>
+
+<nav class="nav-juegos">
+  <button class="btn-nav activo" onclick="mostrarSeccion('conoce',this)">🔍 Conoce los animales</button>
+  <button class="btn-nav" onclick="mostrarSeccion('sonidos',this)">🎵 ¿Quién hace ese sonido?</button>
+  <button class="btn-nav" onclick="mostrarSeccion('memoria',this)">🧠 Juego de memoria</button>
+  <button class="btn-nav" onclick="mostrarSeccion('colorear',this)">🎨 ¡A colorear!</button>
+  <button class="btn-nav" onclick="mostrarSeccion('arrastrar',this)">🐾 ¡Ordena los animales!</button>
+</nav>
+
+<!-- ===== SECCIÓN 1: CONOCE LOS ANIMALES ===== -->
+<section id="conoce" class="seccion activa">
+  <div class="seccion-titulo">🌿 ¡Conoce a tus amigos de la selva!</div>
+  <div class="seccion-desc">Haz clic en cada animal para descubrir un dato curioso 🐾</div>
+  <div class="animales-grid" id="gridAnimales"></div>
+</section>
+
+<!-- ===== SECCIÓN 2: SONIDOS ===== -->
+<section id="sonidos" class="seccion">
+  <div class="seccion-titulo">🎵 ¿Qué animal hace este sonido?</div>
+  <div class="puntaje-box">
+    <span>✅ Aciertos: <span id="aciertos">0</span></span>
+    <span>❌ Errores: <span id="errores">0</span></span>
+    <span>🔢 Pregunta: <span id="numPregunta">1</span>/10</span>
+  </div>
+  <div class="sonidos-container">
+    <div class="pregunta-sonido">
+      <h2 id="textoPregunta">¿Qué animal hace este sonido?</h2>
+      <span id="emojiPregunta" class="emoji-pregunta">🦁</span>
+      <p id="sonidoPregunta" style="font-size:1.4rem;font-weight:700;color:var(--cafe);margin:0.3rem 0"></p>
+      <button class="btn-escuchar" id="btnEscuchar" onclick="escucharSonido()">🔊 ¡Escuchar sonido!</button>
+      <div class="opciones-sonido" id="opcionesContainer"></div>
+      <button class="btn-siguiente" id="btnSiguiente" onclick="siguientePregunta()">¡Siguiente! →</button>
+    </div>
+    <div id="mensajeFinal" class="mensaje"></div>
+  </div>
+</section>
+
+<!-- ===== SECCIÓN 3: MEMORIA ===== -->
+<section id="memoria" class="seccion">
+  <div class="seccion-titulo">🧠 Juego de Memoria</div>
+  <div class="seccion-desc">¡Encuentra las parejas de animales!</div>
+  <div class="memoria-info">
+    <span>⏱️ Movimientos: <strong id="movimientos">0</strong></span>
+    <span>🏆 Parejas: <strong id="parejas">0</strong>/8</span>
+  </div>
+  <div class="memoria-grid" id="gridMemoria"></div>
+  <button class="btn-reiniciar" onclick="iniciarMemoria()">🔄 ¡Jugar de nuevo!</button>
+</section>
+
+<!-- ===== SECCIÓN 4: COLOREAR ===== -->
+<section id="colorear" class="seccion">
+  <div class="seccion-titulo">🎨 ¡Pinta la selva!</div>
+  <div class="seccion-desc">Elige un color y dibuja con tu dedo o ratón</div>
+  <div class="colorear-section">
+    <div class="paleta" id="paleta"></div>
+    <canvas id="canvas-colorear" width="500" height="380"></canvas>
+    <br>
+    <button class="btn-limpiar" onclick="limpiarCanvas()">🗑️ Borrar todo</button>
+    <button class="btn-limpiar" style="background:#9b59b6;box-shadow:0 3px 0 #6c3483" onclick="cambiarTamano()">🖌️ Tamaño</button>
+  </div>
+</section>
+
+<!-- ===== SECCIÓN 5: ARRASTRAR (NUEVO) ===== -->
+<section id="arrastrar" class="seccion">
+  <div class="seccion-titulo">🐾 ¡Ordena los animales!</div>
+  <div class="seccion-desc">Arrastra cada animal al hábitat donde vive</div>
+
+  <div class="drag-container">
+    <div class="drag-puntaje" id="dragPuntaje">🌍 Aciertos: <strong id="dragAciertos">0</strong> / <strong id="dragTotal">0</strong></div>
+    <div class="drag-instruccion" id="dragInstruccion">⬇️ Arrastra los animales hacia su hábitat correcto</div>
+
+    <!-- Chips de animales -->
+    <div class="drag-items" id="dragItems"></div>
+
+    <!-- Columnas de hábitats -->
+    <div class="drag-area">
+      <div class="drag-columna selva">
+        <h3>🌿 Selva</h3>
+        <div class="drag-zona selva-zona" id="zona-selva" ondragover="event.preventDefault();this.classList.add('hovered')" ondragleave="this.classList.remove('hovered')" ondrop="soltarChip(event,'selva')"></div>
+      </div>
+      <div class="drag-columna sabana">
+        <h3>🌾 Sabana</h3>
+        <div class="drag-zona sabana-zona" id="zona-sabana" ondragover="event.preventDefault();this.classList.add('hovered')" ondragleave="this.classList.remove('hovered')" ondrop="soltarChip(event,'sabana')"></div>
+      </div>
+
+    </div>
+
+    <button class="btn-verificar-drag" id="btnVerificarDrag" onclick="verificarDrag()" style="display:none;">✅ Verificar respuestas</button>
+    <div class="drag-resultado" id="dragResultado"></div>
+    <button class="btn-reiniciar" onclick="iniciarDrag()" style="display:none;" id="btnReiniciarDrag">🔄 ¡Jugar de nuevo!</button>
+  </div>
+</section>
+
+<!-- ===== MODAL PARTICIPANTES ===== -->
+<div class="modal-overlay" id="modalParticipantes">
+  <div class="modal">
+    <button class="modal-close" onclick="cerrarModal('modalParticipantes')">✕</button>
+    <div class="modal-titulo">👥 Participantes</div>
+    <div id="listaParticipantes"></div>
+  </div>
+</div>
+
+<!-- ===== MODAL PANEL PROFE ===== -->
+<div class="modal-overlay" id="modalProfe">
+  <div class="modal">
+    <button class="modal-close" onclick="cerrarModal('modalProfe')">✕</button>
+    <div class="modal-titulo">📋 Panel del Profe</div>
+    <div id="contenidoProfe"></div>
+  </div>
+</div>
+
+<script>
+// ======================================================
+// DATOS
+// ======================================================
+const ANIMALES = [
+  {emoji:"🦁",nombre:"León",dato:"¡El rey de la selva puede rugir tan fuerte que se escucha a 8 km!",sonido:"ROOAARRR 🔊",habitat:"sabana"},
+  {emoji:"🐘",nombre:"Elefante",dato:"¡Los elefantes se saludan enroscando sus trompas como un abrazo!",sonido:"TROMPETA 🎺",habitat:"sabana"},
+  {emoji:"🐒",nombre:"Mono",dato:"¡Los monos se comunican con más de 30 sonidos diferentes!",sonido:"UU-AA-AA 🙊",habitat:"selva"},
+  {emoji:"🦒",nombre:"Jirafa",dato:"¡La jirafa es el animal más alto del mundo, mide hasta 6 metros!",sonido:"Casi no hace ruido 🤫",habitat:"sabana"},
+  {emoji:"🐆",nombre:"Leopardo",dato:"¡El leopardo puede escalar árboles cargando animales tan pesados como él!",sonido:"GRUÑIDO 😤",habitat:"selva"},
+  {emoji:"🦜",nombre:"Tucán",dato:"¡El pico del tucán mide casi la mitad de su cuerpo!",sonido:"CREK-CREK 🎶",habitat:"selva"},
+  {emoji:"🐊",nombre:"Cocodrilo",dato:"¡Los cocodrilos llevan más de 200 millones de años en la Tierra!",sonido:"HSSSSS 💨",habitat:"selva"},
+  {emoji:"🦛",nombre:"Hipopótamo",dato:"¡El hipopótamo suda un líquido rojo que actúa como protector solar!",sonido:"HONK-HONK 📣",habitat:"sabana"},
+  {emoji:"🦓",nombre:"Cebra",dato:"¡Cada cebra tiene un patrón de rayas único, como nuestras huellas!",sonido:"RELINCHO 🐴",habitat:"sabana"},
+  {emoji:"🦅",nombre:"Águila",dato:"¡El águila puede ver un conejo a 3 kilómetros de distancia!",sonido:"KI-KI-KI 🔔",habitat:"selva"},
+  {emoji:"🐍",nombre:"Serpiente",dato:"¡Las serpientes huelen con la lengua para detectar presas!",sonido:"SSSSSS 🌬️",habitat:"selva"},
+
+];
+
+// ======================================================
+// SÍNTESIS DE VOZ - SONIDOS DE ANIMALES
+// ======================================================
+const SONIDOS_VOZ = {
+  "León":       { texto: "Ruaaaa, ruaaaa, soy el rey de la selva, ruaaaa", velocidad: 0.6, tono: 0.4 },
+  "Elefante":   { texto: "Pruuuu, pruuuu, soy el elefante, pruuuuuu", velocidad: 0.5, tono: 0.3 },
+  "Mono":       { texto: "Uu aa aa, uu aa aa, soy el mono saltarín", velocidad: 1.3, tono: 1.8 },
+  "Jirafa":     { texto: "Mmmm, soy la jirafa, casi no hago ruido, mmm", velocidad: 0.7, tono: 0.8 },
+  "Leopardo":   { texto: "Grrr, grrr, soy el leopardo, grrrrrr", velocidad: 0.6, tono: 0.5 },
+  "Tucán":      { texto: "Crek crek crek, crek crek, soy el tucán", velocidad: 1.1, tono: 1.6 },
+  "Cocodrilo":  { texto: "Hssss, hssss, soy el cocodrilo, hsssssss", velocidad: 0.5, tono: 0.3 },
+  "Hipopótamo": { texto: "Honk honk, honk honk, soy el hipopótamo", velocidad: 0.6, tono: 0.4 },
+  "Cebra":      { texto: "Iiiiii, iiiiii, soy la cebra, iiiiiiih", velocidad: 0.8, tono: 1.2 },
+  "Águila":     { texto: "Ki ki ki, ki ki ki ki, soy el águila real", velocidad: 1.2, tono: 1.7 },
+  "Serpiente":  { texto: "Ssssss, ssssss, soy la serpiente, sssssss", velocidad: 0.5, tono: 0.5 },
+};
+
+let vozActual = null;
+
+function hablarTexto(texto, velocidad, tono) {
+  if (!window.speechSynthesis) { alert("Tu navegador no soporta sonidos. Prueba con Chrome o Edge."); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(texto);
+  u.lang = 'es-ES';
+  u.rate = velocidad || 0.8;
+  u.pitch = tono || 1.0;
+  u.volume = 1;
+  // Intentar voz en español
+  const voces = window.speechSynthesis.getVoices();
+  const vozEs = voces.find(v => v.lang.startsWith('es')) || voces[0];
+  if (vozEs) u.voice = vozEs;
+  vozActual = u;
+  window.speechSynthesis.speak(u);
+}
+
+function hablarAnimal(nombre, sonidoTexto) {
+  const cfg = SONIDOS_VOZ[nombre];
+  if (cfg) {
+    hablarTexto(cfg.texto, cfg.velocidad, cfg.tono);
+  } else {
+    hablarTexto(nombre + ' hace este sonido: ' + sonidoTexto.replace(/[🔊🎺🙊🤫😤🎶💨📣🐴🔔🌬️]/gu,''), 0.8, 1.0);
+  }
+}
+
+// Nombre del animal que está en la pregunta actual (para el botón escuchar)
+let animalPreguntaActual = '';
+
+function escucharSonido() {
+  if (!animalPreguntaActual) return;
+  hablarAnimal(animalPreguntaActual, '');
+  const btn = document.getElementById('btnEscuchar');
+  btn.textContent = '🔊 Reproduciendo...';
+  btn.style.opacity = '0.7';
+  setTimeout(() => { btn.textContent = '🔊 ¡Escuchar sonido!'; btn.style.opacity = '1'; }, 2000);
+}
+
+// Cargar voces cuando estén disponibles
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+}
+
+// ======================================================
+// SISTEMA DE PARTICIPANTES (localStorage)
+// ======================================================
+let jugadorActual = null;
+
+function cargarParticipantes() {
+  try {
+    return JSON.parse(localStorage.getItem('selvaParticipantes') || '[]');
+  } catch(e) { return []; }
+}
+
+function guardarParticipantes(lista) {
+  localStorage.setItem('selvaParticipantes', JSON.stringify(lista));
+}
+
+function registrarParticipante() {
+  const input = document.getElementById('inputNombre');
+  const nombre = input.value.trim();
+  if (!nombre) { input.focus(); input.style.borderColor='#dc2626'; setTimeout(()=>input.style.borderColor='',1200); return; }
+
+  let lista = cargarParticipantes();
+  let p = lista.find(x => x.nombre.toLowerCase() === nombre.toLowerCase());
+  if (!p) {
+    p = { nombre, puntos: 0, juegosCompletados: [], fechaIngreso: new Date().toLocaleString('es-CO') };
+    lista.push(p);
+    guardarParticipantes(lista);
+  }
+  jugadorActual = p.nombre;
+  mostrarBadge();
+}
+
+function mostrarBadge() {
+  if (!jugadorActual) return;
+  const lista = cargarParticipantes();
+  const p = lista.find(x => x.nombre === jugadorActual);
+  if (!p) return;
+  document.getElementById('registroBar').style.display = 'none';
+  document.getElementById('badgeJugador').style.display = 'flex';
+  document.getElementById('nombreActual').textContent = p.nombre;
+  document.getElementById('puntosActual').textContent = p.puntos + ' ⭐';
+}
+
+function cerrarSesion() {
+  jugadorActual = null;
+  document.getElementById('registroBar').style.display = 'flex';
+  document.getElementById('badgeJugador').style.display = 'none';
+  document.getElementById('inputNombre').value = '';
+}
+
+function sumarPuntos(cantidad, juego) {
+  if (!jugadorActual) return;
+  let lista = cargarParticipantes();
+  const p = lista.find(x => x.nombre === jugadorActual);
+  if (!p) return;
+  p.puntos += cantidad;
+  if (!p.juegosCompletados) p.juegosCompletados = [];
+  if (!p.juegosCompletados.includes(juego)) p.juegosCompletados.push(juego);
+  guardarParticipantes(lista);
+  mostrarBadge();
+  if (cantidad > 0) lanzarConfeti();
+}
+
+function lanzarConfeti() {
+  const colores = ['#f59e0b','#10b981','#3b82f6','#ef4444','#8b5cf6','#f97316'];
+  for (let i = 0; i < 28; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `left:${Math.random()*100}vw;top:-10px;background:${colores[Math.floor(Math.random()*colores.length)]};animation-duration:${0.9+Math.random()*1}s;animation-delay:${Math.random()*0.4}s;width:${8+Math.random()*10}px;height:${8+Math.random()*10}px;border-radius:${Math.random()>0.5?'50%':'2px'}`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2200);
+  }
+}
+
+// ======================================================
+// SECCIÓN 1: CONOCER ANIMALES
+// ======================================================
+function crearGridAnimales() {
+  const grid = document.getElementById('gridAnimales');
+  grid.innerHTML = '';
+  ANIMALES.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'animal-card';
+    card.innerHTML = `<span class="emoji-animal">${a.emoji}</span><div class="nombre-animal">${a.nombre}</div><div class="dato-animal">💡 ${a.dato}</div><button class="btn-sonido-card" onclick="event.stopPropagation();hablarAnimal('${a.nombre}','${a.sonido.replace(/'/g,"\\'")}')">🔊 Escuchar</button>`;
+    card.onclick = () => {
+      card.classList.toggle('mostrar-dato');
+      card.classList.add('flip');
+      setTimeout(() => card.classList.remove('flip'), 600);
+      if (!card.classList.contains('_contado')) {
+        card.classList.add('_contado');
+        sumarPuntos(1, 'conoce');
+      }
+    };
+    grid.appendChild(card);
+  });
+}
+
+// ======================================================
+// SECCIÓN 2: SONIDOS
+// ======================================================
+let preguntaActual = 0, aciertosVal = 0, erroresVal = 0, respondida = false;
+const PREGUNTAS_SONIDO = ANIMALES.map(a => ({emoji:a.emoji,nombre:a.nombre,sonido:a.sonido}));
+
+function mezclar(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function cargarPregunta() {
+  if (preguntaActual >= 10) { mostrarResultadoSonidos(); return; }
+  respondida = false;
+  const pArr = mezclar(PREGUNTAS_SONIDO);
+  const correcta = pArr[0];
+  const opciones = mezclar([correcta, ...pArr.slice(1,4)]);
+  animalPreguntaActual = correcta.nombre;
+  document.getElementById('emojiPregunta').textContent = correcta.emoji;
+  document.getElementById('sonidoPregunta').textContent = `"${correcta.sonido}"`;
+  document.getElementById('numPregunta').textContent = preguntaActual + 1;
+  document.getElementById('btnSiguiente').style.display = 'none';
+  document.getElementById('btnEscuchar').textContent = '🔊 ¡Escuchar sonido!';
+  document.getElementById('btnEscuchar').style.opacity = '1';
+  document.getElementById('mensajeFinal').classList.remove('visible');
+  const cont = document.getElementById('opcionesContainer');
+  cont.innerHTML = '';
+  opciones.forEach(op => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-opcion';
+    btn.textContent = op.nombre;
+    btn.onclick = () => verificarRespuesta(btn, op.nombre, correcta.nombre);
+    cont.appendChild(btn);
+  });
+  // Reproducir sonido automáticamente al cargar la pregunta
+  setTimeout(() => hablarAnimal(correcta.nombre, correcta.sonido), 400);
+}
+
+function verificarRespuesta(btn, elegido, correcto) {
+  if (respondida) return;
+  respondida = true;
+  document.querySelectorAll('.btn-opcion').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correcto) b.classList.add('correcto');
+  });
+  if (elegido === correcto) {
+    btn.classList.add('correcto');
+    aciertosVal++;
+    document.getElementById('aciertos').textContent = aciertosVal;
+    sumarPuntos(5, 'sonidos');
+  } else {
+    btn.classList.add('incorrecto');
+    erroresVal++;
+    document.getElementById('errores').textContent = erroresVal;
+  }
+  document.getElementById('btnSiguiente').style.display = 'inline-block';
+}
+
+function siguientePregunta() { preguntaActual++; cargarPregunta(); }
+
+function mostrarResultadoSonidos() {
+  const msg = document.getElementById('mensajeFinal');
+  const pct = Math.round((aciertosVal/10)*100);
+  let texto = pct >= 80 ? `🏆 ¡Increíble! Sacaste ${aciertosVal}/10.` : pct >= 50 ? `😊 ¡Muy bien! Sacaste ${aciertosVal}/10.` : `🌱 Sacaste ${aciertosVal}/10. ¡Sigue practicando!`;
+  msg.textContent = texto;
+  msg.classList.add('visible');
+  document.querySelector('.pregunta-sonido').style.display = 'none';
+  document.querySelector('.puntaje-box').innerHTML += ` <button onclick="reiniciarSonidos()" style="background:var(--verde);color:#fff;border:none;border-radius:20px;padding:0.4rem 1rem;font-family:'Baloo 2',cursive;font-size:1rem;cursor:pointer;">🔄 Repetir</button>`;
+}
+
+function reiniciarSonidos() {
+  preguntaActual = 0; aciertosVal = 0; erroresVal = 0;
+  document.getElementById('aciertos').textContent = 0;
+  document.getElementById('errores').textContent = 0;
+  document.querySelector('.pregunta-sonido').style.display = 'block';
+  document.getElementById('mensajeFinal').classList.remove('visible');
+  const pb = document.querySelector('.puntaje-box');
+  pb.innerHTML = `<span>✅ Aciertos: <span id="aciertos">0</span></span><span>❌ Errores: <span id="errores">0</span></span><span>🔢 Pregunta: <span id="numPregunta">1</span>/10</span>`;
+  cargarPregunta();
+}
+
+// ======================================================
+// SECCIÓN 3: MEMORIA
+// ======================================================
+const EMOJIS_MEMORIA = ['🦁','🐘','🐒','🦒','🐆','🦜','🐊','🦛'];
+let cartasVolteadas = [], parejasEncontradas = 0, movimientosVal = 0, bloqueado = false;
+
+function iniciarMemoria() {
+  parejasEncontradas = 0; movimientosVal = 0; cartasVolteadas = []; bloqueado = false;
+  document.getElementById('parejas').textContent = '0';
+  document.getElementById('movimientos').textContent = '0';
+  const grid = document.getElementById('gridMemoria');
+  grid.innerHTML = '';
+  const barajadas = mezclar([...EMOJIS_MEMORIA, ...EMOJIS_MEMORIA]);
+  barajadas.forEach((emoji, i) => {
+    const carta = document.createElement('div');
+    carta.className = 'carta';
+    carta.dataset.emoji = emoji;
+    carta.dataset.index = i;
+    carta.innerHTML = `<span class="dorso">🌿</span><span class="frente">${emoji}</span>`;
+    carta.onclick = () => voltearCarta(carta);
+    grid.appendChild(carta);
+  });
+}
+
+function voltearCarta(carta) {
+  if (bloqueado || carta.classList.contains('volteada') || carta.classList.contains('pareja')) return;
+  carta.classList.add('volteada');
+  cartasVolteadas.push(carta);
+  if (cartasVolteadas.length === 2) {
+    movimientosVal++;
+    document.getElementById('movimientos').textContent = movimientosVal;
+    bloqueado = true;
+    const [c1, c2] = cartasVolteadas;
+    if (c1.dataset.emoji === c2.dataset.emoji) {
+      c1.classList.add('pareja'); c2.classList.add('pareja');
+      parejasEncontradas++;
+      document.getElementById('parejas').textContent = parejasEncontradas;
+      cartasVolteadas = []; bloqueado = false;
+      if (parejasEncontradas === 8) {
+        const pts = Math.max(10, 30 - movimientosVal);
+        sumarPuntos(pts, 'memoria');
+        setTimeout(() => alert(`🏆 ¡Ganaste! Usaste ${movimientosVal} movimientos. +${pts} puntos ⭐`), 200);
+      }
+    } else {
+      setTimeout(() => {
+        c1.classList.remove('volteada'); c2.classList.remove('volteada');
+        cartasVolteadas = []; bloqueado = false;
+      }, 900);
+    }
+  }
+}
+
+// ======================================================
+// SECCIÓN 4: COLOREAR
+// ======================================================
+const COLORES = ['#2ecc71','#e74c3c','#3498db','#f39c12','#9b59b6','#1abc9c','#e67e22','#f1c40f','#34495e','#fff','#000','#8B4513'];
+let pintando = false, colorActual = '#2ecc71', tamanoPincel = 10;
+
+function iniciarColorear() {
+  const paleta = document.getElementById('paleta');
+  paleta.innerHTML = '';
+  COLORES.forEach((c, i) => {
+    const btn = document.createElement('div');
+    btn.className = 'color-btn' + (i === 0 ? ' seleccionado' : '');
+    btn.style.background = c;
+    btn.onclick = () => {
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('seleccionado'));
+      btn.classList.add('seleccionado');
+      colorActual = c;
+    };
+    paleta.appendChild(btn);
+  });
+
+  const canvas = document.getElementById('canvas-colorear');
+  const ctx = canvas.getContext('2d');
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - rect.left) * scaleX, y: (src.clientY - rect.top) * scaleY };
+  }
+  function iniciarTrazo(e) {
+    e.preventDefault(); pintando = true;
+    const p = getPos(e);
+    ctx.beginPath(); ctx.moveTo(p.x, p.y);
+    ctx.arc(p.x, p.y, tamanoPincel/2, 0, Math.PI*2);
+    ctx.fillStyle = colorActual; ctx.fill();
+  }
+  function dibujar(e) {
+    e.preventDefault(); if (!pintando) return;
+    const p = getPos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.strokeStyle = colorActual; ctx.lineWidth = tamanoPincel;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke();
+  }
+  function pararTrazo(e) { e.preventDefault(); pintando = false; ctx.beginPath(); }
+
+  canvas.addEventListener('mousedown', iniciarTrazo);
+  canvas.addEventListener('mousemove', dibujar);
+  canvas.addEventListener('mouseup', pararTrazo);
+  canvas.addEventListener('mouseleave', pararTrazo);
+  canvas.addEventListener('touchstart', iniciarTrazo, {passive:false});
+  canvas.addEventListener('touchmove', dibujar, {passive:false});
+  canvas.addEventListener('touchend', pararTrazo, {passive:false});
+
+  dibujarSelvaFondo(ctx, canvas.width, canvas.height);
+}
+
+function dibujarSelvaFondo(ctx, w, h) {
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#e8f5e9'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#87ceeb'; ctx.fillRect(0, 0, w, h * 0.4);
+  const hojas = [
+    {x:30,y:20,r:60,color:'#4caf50'},{x:80,y:10,r:50,color:'#66bb6a'},
+    {x:420,y:15,r:65,color:'#388e3c'},{x:460,y:5,r:55,color:'#43a047'},
+    {x:10,y:80,r:70,color:'#2e7d32'},{x:490,y:70,r:75,color:'#1b5e20'},
+  ];
+  hojas.forEach(h2 => { ctx.beginPath(); ctx.arc(h2.x,h2.y,h2.r,0,Math.PI*2); ctx.fillStyle=h2.color; ctx.fill(); });
+  ctx.fillStyle = '#a5d6a7'; ctx.fillRect(0,h*0.75,w,h*0.25);
+  ctx.fillStyle = '#81c784'; ctx.fillRect(0,h*0.82,w,h*0.18);
+  const animalesCanvas = [{emoji:'🦁',x:80,y:h*0.6},{emoji:'🐘',x:220,y:h*0.57},{emoji:'🦒',x:360,y:h*0.5},{emoji:'🐒',x:430,y:h*0.65}];
+  ctx.font = '2.5rem Arial'; ctx.textAlign = 'center';
+  animalesCanvas.forEach(a => ctx.fillText(a.emoji, a.x, a.y));
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  [[60,55,30],[150,40,20],[300,50,25],[400,45,22]].forEach(([x,y,r]) => {
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  });
+}
+
+function limpiarCanvas() {
+  const canvas = document.getElementById('canvas-colorear');
+  dibujarSelvaFondo(canvas.getContext('2d'), canvas.width, canvas.height);
+}
+
+let tamanos = [6,12,20,30]; let idxTam = 1;
+function cambiarTamano() { idxTam = (idxTam + 1) % tamanos.length; tamanoPincel = tamanos[idxTam]; }
+
+// ======================================================
+// SECCIÓN 5: ARRASTRAR (NUEVO)
+// ======================================================
+const ANIMALES_DRAG = ANIMALES.filter(a => a.habitat);
+let dragActivo = null;
+let dragColocados = {}; // nombre -> zona donde fue colocado
+
+function iniciarDrag() {
+  dragColocados = {};
+  document.getElementById('dragAciertos').textContent = 0;
+  document.getElementById('dragTotal').textContent = ANIMALES_DRAG.length;
+  document.getElementById('dragResultado').classList.remove('visible');
+  document.getElementById('btnVerificarDrag').style.display = 'none';
+  document.getElementById('btnReiniciarDrag').style.display = 'none';
+  document.getElementById('dragInstruccion').style.display = 'block';
+
+  // Limpiar zonas
+  ['zona-selva','zona-sabana'].forEach(id => {
+    document.getElementById(id).innerHTML = '';
+  });
+
+  // Crear chips mezclados
+  const items = document.getElementById('dragItems');
+  items.innerHTML = '';
+  mezclar(ANIMALES_DRAG).forEach(a => {
+    const chip = crearChip(a);
+    items.appendChild(chip);
+  });
+}
+
+function crearChip(animal) {
+  const chip = document.createElement('div');
+  chip.className = 'drag-chip';
+  chip.draggable = true;
+  chip.dataset.nombre = animal.nombre;
+  chip.dataset.habitat = animal.habitat;
+  chip.innerHTML = `${animal.emoji} ${animal.nombre}`;
+  chip.addEventListener('dragstart', e => {
+    dragActivo = chip;
+    chip.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', animal.nombre + '|' + animal.habitat);
+  });
+  chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+
+  // Touch support
+  chip.addEventListener('touchstart', touchStart, {passive:false});
+  chip.addEventListener('touchmove', touchMove, {passive:false});
+  chip.addEventListener('touchend', touchEnd, {passive:false});
+
+  return chip;
+}
+
+// Touch drag support
+let touchChip = null, touchClone = null;
+function touchStart(e) {
+  touchChip = e.currentTarget;
+  const touch = e.touches[0];
+  touchClone = touchChip.cloneNode(true);
+  touchClone.style.cssText = `position:fixed;z-index:9999;pointer-events:none;opacity:0.8;top:${touch.clientY-20}px;left:${touch.clientX-40}px;`;
+  document.body.appendChild(touchClone);
+  e.preventDefault();
+}
+function touchMove(e) {
+  if (!touchClone) return;
+  const touch = e.touches[0];
+  touchClone.style.top = (touch.clientY-20)+'px';
+  touchClone.style.left = (touch.clientX-40)+'px';
+  e.preventDefault();
+}
+function touchEnd(e) {
+  if (!touchClone || !touchChip) return;
+  const touch = e.changedTouches[0];
+  touchClone.remove(); touchClone = null;
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  const zona = el ? el.closest('.drag-zona') : null;
+  if (zona) {
+    const habitatZona = zona.id.replace('zona-', '');
+    const nombre = touchChip.dataset.nombre;
+    const habitat = touchChip.dataset.habitat;
+    moverChipAZona(touchChip, habitatZona, nombre, habitat, zona);
+  }
+  touchChip = null;
+}
+
+function soltarChip(e, habitatZona) {
+  e.preventDefault();
+  const zona = e.currentTarget;
+  zona.classList.remove('hovered');
+  const data = e.dataTransfer.getData('text/plain').split('|');
+  const nombre = data[0], habitat = data[1];
+  if (!dragActivo) return;
+  moverChipAZona(dragActivo, habitatZona, nombre, habitat, zona);
+  dragActivo = null;
+}
+
+function moverChipAZona(chipEl, habitatZona, nombre, habitat, zonaEl) {
+  // Quitar de donde estaba
+  if (chipEl.parentElement !== document.getElementById('dragItems')) {
+    chipEl.parentElement.removeChild(chipEl);
+  } else {
+    document.getElementById('dragItems').removeChild(chipEl);
+  }
+  chipEl.classList.remove('correcto','incorrecto');
+  dragColocados[nombre] = habitatZona;
+  zonaEl.appendChild(chipEl);
+
+  // Mostrar verificar si hay al menos un chip colocado
+  const hayColocados = Object.keys(dragColocados).length > 0;
+  document.getElementById('btnVerificarDrag').style.display = hayColocados ? 'block' : 'none';
+}
+
+function verificarDrag() {
+  let correctos = 0;
+  const allChips = document.querySelectorAll('.drag-zona .drag-chip');
+  allChips.forEach(chip => {
+    const nombre = chip.dataset.nombre;
+    const habitatReal = chip.dataset.habitat;
+    const zonaActual = chip.parentElement.id.replace('zona-','');
+    if (zonaActual === habitatReal) {
+      chip.classList.add('correcto');
+      correctos++;
+    } else {
+      chip.classList.add('incorrecto');
+    }
+  });
+
+  const total = ANIMALES_DRAG.length;
+  const pct = Math.round((correctos / total) * 100);
+  document.getElementById('dragAciertos').textContent = correctos;
+  const resultado = document.getElementById('dragResultado');
+  resultado.textContent = pct >= 80
+    ? `🏆 ¡Excelente! ${correctos}/${total} animales en su hábitat correcto!`
+    : pct >= 50
+    ? `😊 ¡Bien! ${correctos}/${total} correctos. ¡Casi lo logras!`
+    : `🌱 ${correctos}/${total} correctos. ¡Aprende más sobre los hábitats!`;
+  resultado.classList.add('visible');
+  document.getElementById('btnVerificarDrag').style.display = 'none';
+  document.getElementById('btnReiniciarDrag').style.display = 'block';
+  document.getElementById('dragInstruccion').style.display = 'none';
+  sumarPuntos(correctos * 5, 'arrastrar');
+}
+
+// ======================================================
+// NAVEGACIÓN
+// ======================================================
+function mostrarSeccion(id, btn) {
+  document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
+  document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('activo'));
+  document.getElementById(id).classList.add('activa');
+  if (btn) btn.classList.add('activo');
+}
+
+// ======================================================
+// MODALES
+// ======================================================
+function abrirParticipantes() {
+  const lista = cargarParticipantes().sort((a,b) => b.puntos - a.puntos);
+  const cont = document.getElementById('listaParticipantes');
+
+  if (lista.length === 0) {
+    cont.innerHTML = '<div class="sin-participantes">🌿 Aún no hay participantes.<br>¡Sé el primero en registrarte!</div>';
+  } else {
+    const maxPts = lista[0].puntos || 1;
+    let html = `<table class="tabla-participantes">
+      <thead><tr><th>#</th><th>Participante</th><th>Puntos</th><th>Progreso</th><th>Juegos</th></tr></thead><tbody>`;
+    lista.forEach((p, i) => {
+      const rank = i === 0 ? '<span class="rank-badge rank-1">🥇</span>' : i === 1 ? '<span class="rank-badge rank-2">🥈</span>' : i === 2 ? '<span class="rank-badge rank-3">🥉</span>' : `<span style="color:#9ca3af;font-family:'Baloo 2',cursive">${i+1}</span>`;
+      const pct = Math.round((p.puntos/maxPts)*100);
+      const juegos = (p.juegosCompletados||[]).map(j => `<span class="juego-tag ${j}">${{conoce:'🔍',sonidos:'🎵',memoria:'🧠',arrastrar:'🐾',colorear:'🎨'}[j]||j}</span>`).join('');
+      html += `<tr>
+        <td>${rank}</td>
+        <td><strong>${p.nombre}</strong></td>
+        <td><span class="puntos-chip">${p.puntos} ⭐</span></td>
+        <td><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div></td>
+        <td>${juegos || '<span style="color:#9ca3af;font-size:0.85rem">–</span>'}</td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+    cont.innerHTML = html;
+  }
+
+  document.getElementById('modalParticipantes').classList.add('abierto');
+}
+
+function abrirProfe() {
+  const lista = cargarParticipantes().sort((a,b) => b.puntos - a.puntos);
+  const cont = document.getElementById('contenidoProfe');
+
+  const totalPts = lista.reduce((s,p) => s + p.puntos, 0);
+  const promedio = lista.length ? Math.round(totalPts/lista.length) : 0;
+  const masActivo = lista.length ? lista[0] : null;
+  const juegosUnicos = [...new Set(lista.flatMap(p => p.juegosCompletados||[]))];
+
+  let html = `<div class="stats-grid">
+    <div class="stat-card"><div class="stat-num">${lista.length}</div><div class="stat-label">Participantes</div></div>
+    <div class="stat-card"><div class="stat-num">${promedio}</div><div class="stat-label">Puntos promedio</div></div>
+    <div class="stat-card"><div class="stat-num">${juegosUnicos.length}</div><div class="stat-label">Juegos jugados</div></div>
+    <div class="stat-card"><div class="stat-num">${masActivo ? masActivo.puntos : 0}</div><div class="stat-label">Puntaje más alto</div></div>
+  </div>`;
+
+  if (masActivo) {
+    html += `<div style="background:#f0fdf4;border-radius:12px;padding:0.7rem 1rem;margin-bottom:1rem;font-family:'Baloo 2',cursive;color:var(--verde-oscuro);">
+      🏆 Líder: <strong>${masActivo.nombre}</strong> con <strong>${masActivo.puntos} ⭐</strong>
+    </div>`;
+  }
+
+  if (lista.length > 0) {
+    html += `<div style="font-family:'Baloo 2',cursive;font-size:1rem;color:var(--verde-oscuro);font-weight:700;margin-bottom:0.5rem;">📊 Todos los participantes:</div>`;
+    html += `<table class="tabla-participantes"><thead><tr><th>#</th><th>Nombre</th><th>Puntos</th><th>Ingresó</th></tr></thead><tbody>`;
+    lista.forEach((p, i) => {
+      html += `<tr><td style="font-family:'Baloo 2',cursive;font-weight:800">${i+1}</td><td>${p.nombre}</td><td><span class="puntos-chip">${p.puntos} ⭐</span></td><td style="font-size:0.8rem;color:#6b7280">${p.fechaIngreso||'–'}</td></tr>`;
+    });
+    html += '</tbody></table>';
+  } else {
+    html += '<div class="sin-participantes">🌿 Aún no hay participantes registrados.</div>';
+  }
+
+  html += `<button class="btn-limpiar-datos" onclick="confirmarLimpiar()">🗑️ Limpiar todos los datos</button>`;
+
+  cont.innerHTML = html;
+  document.getElementById('modalProfe').classList.add('abierto');
+}
+
+function confirmarLimpiar() {
+  if (confirm('¿Seguro que deseas eliminar todos los datos de participantes?')) {
+    localStorage.removeItem('selvaParticipantes');
+    jugadorActual = null;
+    cerrarSesion();
+    cerrarModal('modalProfe');
+  }
+}
+
+function cerrarModal(id) {
+  document.getElementById(id).classList.remove('abierto');
+}
+
+// Cerrar modal al hacer clic fuera
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('abierto'); });
+});
+
+// ======================================================
+// INICIAR TODO
+// ======================================================
+crearGridAnimales();
+cargarPregunta();
+iniciarMemoria();
+iniciarColorear();
+iniciarDrag();
+</script>
+
+<!-- Agente JotForm -->
+<script src='https://cdn.jotfor.ms/agent/embedjs/019e00432e597b068d2d58a8c328093e4797/embed.js?autoOpenChatIn=1'></script>
+
+</body>
+</html>
